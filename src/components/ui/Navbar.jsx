@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Search, User, ShoppingBag, Volume2, VolumeX, Sparkles, Menu, X, ArrowRight } from 'lucide-react';
+import { Search, ShoppingBag, Volume2, VolumeX, Sparkles, Menu, X, ArrowRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { luxuryAudio } from '../../utils/audio';
 
@@ -7,6 +7,7 @@ export default function Navbar({ onOpenCart, cartCount = 0, onOpenSearch, onOpen
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [hoveredLink, setHoveredLink] = useState(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -26,185 +27,231 @@ export default function Navbar({ onOpenCart, cartCount = 0, onOpenSearch, onOpen
     { name: 'The Film', href: '#film' },
     { name: 'Fragrances', href: '#fragrances' },
     { name: 'Ingredients', href: '#essence' },
-    { name: 'Scent Lab', href: '#scent-lab', isSpecial: true },
+    { name: 'Scent Lab', href: '#scent-lab' },
     { name: 'About', href: '#story' },
   ];
 
   return (
     <>
+      {/* Floating Pill Capsule Header Container */}
       <header
         style={{
           position: 'fixed',
-          top: 0,
+          top: isScrolled ? '12px' : '18px',
           left: 0,
           right: 0,
           zIndex: 900,
-          padding: isScrolled ? '16px 24px' : '22px 24px',
           display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          background: isScrolled ? 'rgba(7, 7, 9, 0.55)' : 'transparent',
-          backdropFilter: isScrolled ? 'blur(16px)' : 'none',
-          WebkitBackdropFilter: isScrolled ? 'blur(16px)' : 'none',
-          borderBottom: isScrolled ? '1px solid rgba(255, 255, 255, 0.05)' : '1px solid transparent',
+          justifyContent: 'center',
+          padding: '0 16px',
+          pointerEvents: 'none',
           transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
         }}
       >
-        {/* Brand Logo */}
-        <a
-          href="#hero"
-          onClick={() => luxuryAudio.playHoverTick()}
+        {/* The Sleek Floating Capsule Island */}
+        <div
+          className="floating-nav-pill"
           style={{
-            textDecoration: 'none',
-            color: '#fff',
+            pointerEvents: 'auto',
+            width: '100%',
+            maxWidth: '1180px',
+            background: isScrolled ? 'rgba(10, 10, 14, 0.88)' : 'rgba(12, 12, 16, 0.72)',
+            backdropFilter: 'blur(28px)',
+            WebkitBackdropFilter: 'blur(28px)',
+            border: '1px solid rgba(212, 175, 55, 0.22)',
+            borderRadius: '9999px',
+            padding: '8px 12px 8px 18px',
             display: 'flex',
             alignItems: 'center',
-            gap: '8px',
+            justifyContent: 'space-between',
+            boxShadow: '0 16px 45px rgba(0, 0, 0, 0.75), 0 0 20px rgba(212, 175, 55, 0.08)',
+            transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
           }}
         >
-          <span
-            className="font-display"
+          {/* Left Brand Area (Emblem Badge + VÉLORA Typography) */}
+          <a
+            href="#hero"
+            onClick={() => luxuryAudio.playHoverTick()}
+            data-interactive="true"
             style={{
-              fontSize: 'clamp(1.3rem, 4vw, 1.65rem)',
-              letterSpacing: '0.28em',
-              fontWeight: 400,
-              textShadow: '0 2px 20px rgba(0, 0, 0, 0.8)',
+              textDecoration: 'none',
+              color: '#fff',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '10px',
             }}
           >
-            VÉLORA
-          </span>
-        </a>
-
-        {/* Center Navigation Links (Desktop) */}
-        <nav
-          style={{
-            display: 'none',
-            alignItems: 'center',
-            gap: '32px',
-          }}
-          className="desktop-nav"
-        >
-          {navLinks.map((link) => (
-            <a
-              key={link.name}
-              href={link.href}
-              onClick={() => luxuryAudio.playHoverTick()}
+            <div
               style={{
-                color: link.isSpecial ? '#f3e5ab' : '#d4d4d8',
-                fontSize: '0.75rem',
-                letterSpacing: '0.22em',
-                textTransform: 'uppercase',
-                textDecoration: 'none',
-                fontWeight: link.isSpecial ? 600 : 400,
+                width: '32px',
+                height: '32px',
+                borderRadius: '50%',
+                background: 'linear-gradient(135deg, rgba(212, 175, 55, 0.3) 0%, rgba(12, 12, 16, 0.9) 100%)',
+                border: '1px solid rgba(212, 175, 55, 0.5)',
                 display: 'flex',
                 alignItems: 'center',
-                gap: '6px',
-                transition: 'all 0.3s ease',
-                padding: '6px 0',
-                textShadow: '0 2px 10px rgba(0,0,0,0.8)',
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.color = '#fff';
-                e.currentTarget.style.textShadow = '0 0 15px rgba(212, 175, 55, 0.7)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.color = link.isSpecial ? '#f3e5ab' : '#d4d4d8';
-                e.currentTarget.style.textShadow = '0 2px 10px rgba(0,0,0,0.8)';
+                justifyContent: 'center',
+                boxShadow: '0 0 12px rgba(212, 175, 55, 0.25)',
               }}
             >
-              {link.isSpecial && <Sparkles size={12} color="#d4af37" />}
-              {link.name}
-            </a>
-          ))}
-        </nav>
+              <Sparkles size={15} color="#f3e5ab" />
+            </div>
 
-        {/* Right Icons & Actions */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          {/* Audio Toggle */}
-          <button
-            onClick={handleSoundToggle}
-            title={isMuted ? 'Play Ambient Audio' : 'Mute Ambient Audio'}
-            data-interactive="true"
+            <span
+              className="font-display"
+              style={{
+                fontSize: 'clamp(1.1rem, 2.5vw, 1.35rem)',
+                letterSpacing: '0.26em',
+                fontWeight: 600,
+                color: '#ffffff',
+                textShadow: '0 2px 12px rgba(0, 0, 0, 0.9)',
+              }}
+            >
+              VÉLORA
+            </span>
+          </a>
+
+          {/* Center Navigation Links with Smooth Pill Hover Highlights */}
+          <nav
             style={{
-              background: 'none',
-              border: 'none',
-              color: isMuted ? '#a1a1aa' : '#d4af37',
-              cursor: 'pointer',
-              display: 'flex',
+              display: 'none',
               alignItems: 'center',
               gap: '6px',
-              padding: '6px',
-              transition: 'all 0.3s ease',
             }}
+            className="desktop-nav"
           >
-            {isMuted ? <VolumeX size={18} /> : <Volume2 size={18} />}
-          </button>
+            {navLinks.map((link) => {
+              const isHovered = hoveredLink === link.name;
+              return (
+                <a
+                  key={link.name}
+                  href={link.href}
+                  onClick={() => luxuryAudio.playHoverTick()}
+                  onMouseEnter={() => setHoveredLink(link.name)}
+                  onMouseLeave={() => setHoveredLink(null)}
+                  data-interactive="true"
+                  style={{
+                    color: isHovered ? '#f3e5ab' : '#a1a1aa',
+                    background: isHovered ? 'rgba(212, 175, 55, 0.14)' : 'transparent',
+                    border: `1px solid ${isHovered ? 'rgba(212, 175, 55, 0.3)' : 'transparent'}`,
+                    fontSize: '0.72rem',
+                    letterSpacing: '0.18em',
+                    textTransform: 'uppercase',
+                    textDecoration: 'none',
+                    fontWeight: isHovered ? 600 : 500,
+                    padding: '8px 16px',
+                    borderRadius: '9999px',
+                    transition: 'all 0.25s cubic-bezier(0.16, 1, 0.3, 1)',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  {link.name}
+                </a>
+              );
+            })}
+          </nav>
 
-          {/* Search */}
-          <button
-            onClick={() => {
-              luxuryAudio.playHoverTick();
-              if (onOpenSearch) onOpenSearch();
-            }}
-            title="Search Collection"
-            data-interactive="true"
-            style={{
-              background: 'none',
-              border: 'none',
-              color: '#e4e4e7',
-              cursor: 'pointer',
-              padding: '6px',
-            }}
-          >
-            <Search size={18} />
-          </button>
+          {/* Right Action Icons & Luxury Shopping Bag Pill */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            {/* Audio Toggle Pill */}
+            <button
+              onClick={handleSoundToggle}
+              title={isMuted ? 'Play Ambient Audio' : 'Mute Ambient Audio'}
+              data-interactive="true"
+              style={{
+                background: isMuted ? 'rgba(255, 255, 255, 0.04)' : 'rgba(212, 175, 55, 0.15)',
+                border: `1px solid ${isMuted ? 'rgba(255, 255, 255, 0.08)' : 'rgba(212, 175, 55, 0.4)'}`,
+                color: isMuted ? '#a1a1aa' : '#f3e5ab',
+                cursor: 'pointer',
+                width: '36px',
+                height: '36px',
+                borderRadius: '50%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                transition: 'all 0.3s ease',
+              }}
+            >
+              {isMuted ? <VolumeX size={16} /> : <Volume2 size={16} />}
+            </button>
 
-          {/* Luxury Bag Button */}
-          <button
-            onClick={() => {
-              luxuryAudio.playGlassClink();
-              if (onOpenCart) onOpenCart();
-            }}
-            title="Shopping Bag"
-            data-interactive="true"
-            style={{
-              background: 'rgba(212, 175, 55, 0.1)',
-              border: '1px solid rgba(212, 175, 55, 0.35)',
-              color: '#f3e5ab',
-              cursor: 'pointer',
-              padding: '6px 14px',
-              borderRadius: '9999px',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px',
-              backdropFilter: 'blur(10px)',
-            }}
-          >
-            <ShoppingBag size={15} />
-            <span style={{ fontSize: '0.75rem', fontWeight: 600 }}>{cartCount}</span>
-          </button>
+            {/* Search Pill */}
+            <button
+              onClick={() => {
+                luxuryAudio.playHoverTick();
+                if (onOpenSearch) onOpenSearch();
+              }}
+              title="Search Collection"
+              data-interactive="true"
+              style={{
+                background: 'rgba(255, 255, 255, 0.04)',
+                border: '1px solid rgba(255, 255, 255, 0.08)',
+                color: '#e4e4e7',
+                cursor: 'pointer',
+                width: '36px',
+                height: '36px',
+                borderRadius: '50%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                transition: 'all 0.3s ease',
+              }}
+            >
+              <Search size={16} />
+            </button>
 
-          {/* Mobile Hamburger Toggle */}
-          <button
-            onClick={() => {
-              luxuryAudio.playHoverTick();
-              setMobileMenuOpen(!mobileMenuOpen);
-            }}
-            data-interactive="true"
-            style={{
-              background: 'none',
-              border: 'none',
-              color: '#fff',
-              cursor: 'pointer',
-              padding: '6px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-            className="mobile-toggle-btn"
-          >
-            {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
-          </button>
+            {/* Luxury Bag Pill Button (Matching Pill Button in Reference Image) */}
+            <button
+              onClick={() => {
+                luxuryAudio.playGlassClink();
+                if (onOpenCart) onOpenCart();
+              }}
+              title="Shopping Bag"
+              data-interactive="true"
+              className="btn-luxury-solid"
+              style={{
+                padding: '8px 18px',
+                borderRadius: '9999px',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+                cursor: 'pointer',
+                fontSize: '0.72rem',
+                letterSpacing: '0.14em',
+                fontWeight: 700,
+                border: '1px solid #f3e5ab',
+              }}
+            >
+              <ShoppingBag size={14} />
+              <span>BAG ({cartCount})</span>
+            </button>
+
+            {/* Mobile Hamburger Toggle */}
+            <button
+              onClick={() => {
+                luxuryAudio.playHoverTick();
+                setMobileMenuOpen(!mobileMenuOpen);
+              }}
+              data-interactive="true"
+              style={{
+                background: 'rgba(255, 255, 255, 0.05)',
+                border: '1px solid rgba(255, 255, 255, 0.1)',
+                borderRadius: '50%',
+                width: '36px',
+                height: '36px',
+                color: '#fff',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+              className="mobile-toggle-btn"
+            >
+              {mobileMenuOpen ? <X size={18} /> : <Menu size={18} />}
+            </button>
+          </div>
         </div>
       </header>
 
@@ -212,22 +259,24 @@ export default function Navbar({ onOpenCart, cartCount = 0, onOpenSearch, onOpen
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
+            initial={{ opacity: 0, y: -20, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -20, scale: 0.98 }}
             style={{
               position: 'fixed',
-              top: '64px',
-              left: 0,
-              right: 0,
-              background: 'rgba(9, 9, 13, 0.98)',
-              backdropFilter: 'blur(30px)',
-              borderBottom: '1px solid rgba(212, 175, 55, 0.3)',
+              top: '76px',
+              left: '16px',
+              right: '16px',
+              background: 'rgba(10, 10, 14, 0.98)',
+              backdropFilter: 'blur(32px)',
+              border: '1px solid rgba(212, 175, 55, 0.3)',
+              borderRadius: '24px',
               padding: '24px',
               zIndex: 890,
               display: 'flex',
               flexDirection: 'column',
-              gap: '16px',
+              gap: '12px',
+              boxShadow: '0 20px 60px rgba(0, 0, 0, 0.95)',
             }}
           >
             {navLinks.map((link) => (
@@ -239,18 +288,21 @@ export default function Navbar({ onOpenCart, cartCount = 0, onOpenSearch, onOpen
                   setMobileMenuOpen(false);
                 }}
                 style={{
-                  color: link.isSpecial ? '#f3e5ab' : '#fff',
-                  fontSize: '0.95rem',
+                  color: '#ffffff',
+                  fontSize: '0.9rem',
                   letterSpacing: '0.2em',
                   textTransform: 'uppercase',
                   textDecoration: 'none',
-                  padding: '10px 0',
-                  borderBottom: '1px solid rgba(255, 255, 255, 0.05)',
+                  padding: '12px 16px',
+                  borderRadius: '12px',
+                  background: 'rgba(255, 255, 255, 0.03)',
+                  border: '1px solid rgba(255, 255, 255, 0.05)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'space-between',
                   fontFamily: 'var(--font-sans)',
                   fontWeight: 500,
+                  transition: 'all 0.2s ease',
                 }}
               >
                 <span>{link.name}</span>
@@ -262,11 +314,11 @@ export default function Navbar({ onOpenCart, cartCount = 0, onOpenSearch, onOpen
       </AnimatePresence>
 
       <style>{`
-        @media (min-width: 920px) {
+        @media (min-width: 960px) {
           .desktop-nav { display: flex !important; }
           .mobile-toggle-btn { display: none !important; }
         }
-        @media (max-width: 919px) {
+        @media (max-width: 959px) {
           .desktop-nav { display: none !important; }
           .mobile-toggle-btn { display: flex !important; }
         }

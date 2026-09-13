@@ -243,8 +243,8 @@ export default function FooterSection({ onExplore }) {
           gap: '16px',
         }}
       >
-        <span style={{ fontSize: '0.75rem', color: '#71717a' }}>
-          © 2026 VÉLORA. All rights reserved.
+        <span style={{ fontSize: '0.8rem', color: '#a1a1aa', letterSpacing: '0.05em' }}>
+          © 2026 Aadi Jain — Crafted with creativity & code.
         </span>
 
         {/* Social Icons */}
